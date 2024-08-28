@@ -27,7 +27,14 @@
   outline: none;
 }
 
-.highlighted-text {
-  color: black;
-  background-color: yellow;
+.tool-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.note-entry {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  border-bottom: 2px solid #8e96a3;
 }

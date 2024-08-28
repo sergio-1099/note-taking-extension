@@ -1,13 +1,18 @@
 console.log("Content Script is running.");
 
+let highlights = [];
+
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === "highlight") {
     try {
       selectedText = highlightText();
-      sendResponse({ status: "success", selectedText: selectedText });
+      sendResponse({ status: "success", text: selectedText });
     } catch (error) {
       console.log("Error in content script: ", error);
     }
+  } else if (message.action === "removeHighlights") {
+    removeHighlights();
+    sendResponse({ status: "highlights removed" });
   } else {
     sendResponse({ status: "unknown action" });
   }
@@ -17,14 +22,15 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 
 function highlightText() {
   let selection = window.getSelection();
-  console.log(selection.toString());
+  let text = selection.toString();
 
   try {
     if (!selection.isCollapsed) {
       let range = selection.getRangeAt(0);
       const span = document.createElement("span");
       span.style.backgroundColor = "yellow";
-      console.log(span);
+
+      highlights.push(span);
 
       span.appendChild(range.extractContents());
       console.log(span);
@@ -32,11 +38,21 @@ function highlightText() {
       range.insertNode(span);
 
       selection.removeAllRanges();
-      return selection.toString();
     }
   } catch (error) {
     console.log("Error: ", error);
   }
-  
-  return null;
+  return text;
+}
+
+function removeHighlights() {
+  highlights.forEach(span => {
+    const parent = span.parentNode;
+    while (span.firstChild) {
+      parent.insertBefore(span.firstChild, span);
+    }
+    parent.removeChild(span);
+  });
+
+  highlights = [];
 }

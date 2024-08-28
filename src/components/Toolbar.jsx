@@ -1,18 +1,14 @@
 import highlighter from '../assets/highlighter.svg';
+import trash from '../assets/trash-delete-bin.svg';
 
-function Toolbar() {
-  function handleHighlight() {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: "highlight" }, (response) => {
-        console.log(response.status);
-      });
-    });
-  }
-
+function Toolbar(props) {
   return (
     <div className="tool-container">
-      <button className="tool-button" onClick={handleHighlight}>
+      <button className="tool-button" onClick={props.highlightFunction}>
         <img className="tool-icon" src={highlighter} alt="highlighter" />
+      </button>
+      <button className="tool-button" onClick={props.removeHighlightsFunction}>
+        <img className="tool-icon" src={trash} alt="clear all highlights" />
       </button>
     </div>
   );
