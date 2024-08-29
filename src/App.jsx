@@ -3,13 +3,15 @@ import NotesList from './components/NotesList';
 import React from 'react';
 
 function App() {
-  let [highlightedTextArray, setHighlightedTextArray] = React.useState(() => {
+  let [highlightedTextArray, setHighlightedTextArray] = React.useState([]);
+
+  React.useEffect(() => {
     chrome.storage.local.get("highlightedTextArray", (result) => {
       if (result.highlightedTextArray) {
         setHighlightedTextArray(result.highlightedTextArray);
       }
     });
-  });
+  }, []);
 
   function handleHighlight() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

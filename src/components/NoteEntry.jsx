@@ -6,4 +6,4 @@ function NoteEntry({ note }) {
   );
 }
 
-export default NoteEntry
+export default NoteEntry;

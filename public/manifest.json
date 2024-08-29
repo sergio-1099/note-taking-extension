@@ -18,7 +18,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": ["https://en.wikipedia.org/*"],
       "js": ["contentScript.js"]
     }
   ],
